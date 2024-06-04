@@ -1,0 +1,162 @@
+<head>
+    <link rel="stylesheet" href="/Public/css/tranglogin.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#SignUp').click(function () {
+                var ipten = document.getElementsByClassName('ten')[0].value;
+                var ipsdt = document.getElementsByClassName('sdt')[0].value;
+                var ippass = document.getElementsByClassName('pass')[0].value;
+                var ipdiachi = document.getElementsByClassName('diachi')[0].value
+                if(ipten!="" && ipsdt !="" && ippass !="" && ipdiachi!=""){
+                    $.post("http://localhost:3001/searchsdt", {
+                    sdtsearch: document.getElementsByClassName('sdt')[0].value,
+                }, function (data, status) {
+                    if (!data || data.length == 0) {
+                        alert('Đăng ký thành công!')
+                        $.post("http://localhost:3001/InputKH", {
+                            ten: document.getElementsByClassName('ten')[0].value,
+                            sdt: document.getElementsByClassName('sdt')[0].value,
+                            pass: document.getElementsByClassName('pass')[0].value,
+                            diachi: document.getElementsByClassName('diachi')[0].value
+                        }, function (data, status) {
+
+                        })
+                    }
+                    // else if(tenkh  == null || sdt  == null || pass  == null || diachi == null){
+                    //             alert('Vui lòng nhập đủ thông tin')
+                    // }
+                    else {
+                        alert('Số điện thoại đã được sử dụng')
+                        // $("#text").html("Số điện thoại đã được sử dụng!")
+
+                    }
+
+                })
+                }
+                else{
+                    alert('Chưa nhập đủ thông tin')
+                }
+                
+
+            })
+            $('#SignIn').click(function () {
+                $.post("http://localhost:3001/userLogin", {
+                    sdtlg: document.getElementsByClassName('sdtlg')[0].value,
+                    passlg: document.getElementsByClassName('passlg')[0].value,
+                }, function (data, status) {
+                    if (!data || data.length == 0) {
+                        alert("Số điện thoại hoặc mật khẩu không đúng");
+                    }
+                    else {
+                        if (data[0].Admin == 0) {
+                            localStorage.setItem("TenKhachHang", data[0].TenKhachHang);
+                            localStorage.setItem("SoDienThoai", data[0].SoDienThoai);
+                            localStorage.setItem("DiaChi", data[0].DiaChi);
+                            localStorage.setItem("MatKhau", data[0].MatKhau);
+                            localStorage.setItem("Admin", data[0].Admin);
+                            window.location.href = "http://localhost:3001/admin";
+                        }
+                        else {
+                            window.location.href = "http://localhost:3001/home";
+                            localStorage.setItem("TenKhachHang", data[0].TenKhachHang);
+                            localStorage.setItem("SoDienThoai", data[0].SoDienThoai);
+                            localStorage.setItem("DiaChi", data[0].DiaChi);
+                            localStorage.setItem("MatKhau", data[0].MatKhau);
+                            localStorage.setItem("Admin", data[0].Admin);
+
+                        }
+                    }
+                })
+            })
+
+
+        });
+
+
+    </script>
+    <!-- <script>
+        $('#SignIn').click(function () {
+            $.post("http://localhost:3001/userLogin", {
+                sdt: document.getElementsByClassName('sdt')[0].value,
+                pass: document.getElementsByClassName('pass')[0].value,
+            }, function (data, status) {
+                if (!data || data.length == 0) {
+                   alert("Số điện thoại hoặc mật khẩu không đúng");
+                }
+                else {
+                    if(data[0].Admin =="0"){
+                        window.location.href="/admin";
+                    }
+                    else{
+                        localStorage.setItem("TenKhachHang",data[0].TenKhachHang);
+                        localStorage.setItem("SoDienThoai",data[0].SoDienThoai);
+                        window.location.href="/home";
+                    }
+                }
+            })
+        });
+    </script> -->
+</head>
+<h2>Đăng Nhập</h2>
+<div class="container" id="container">
+    <div class="form-container sign-up-container">
+        <div id="form">
+            <h1>Tạo tài khoản</h1><br>
+            <!-- <div class="social-container">
+                <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+                <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+            </div> -->
+            <span>Số điện thoại sẽ là tài khoản đăng nhập</span>
+            <input type="text" placeholder="Họ Tên" class="ten" required />
+            <input type="text" placeholder="Số điện thoai" class="sdt" required />
+            <input type="password" placeholder="Mật khẩu" class="pass" required />
+            <input type="address" placeholder="Địa chỉ" class="diachi" required />
+            <div id="text"></div>
+            <button id="SignUp">Đăng ký</button>
+        </div>
+    </div>
+    <div class="form-container sign-in-container">
+        <div id="form">
+            <h1>Đăng nhập</h1><br>
+            <!-- <div class="social-container">
+                <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+                <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+            </div> -->
+            <span>Số điện thoại sẽ là tài khoản đăng nhập</span>
+            <input type="text" placeholder="Số điện thoại" class="sdtlg" required />
+            <input type="password" placeholder="Password" class="passlg" required />
+            <button id="SignIn">Đăng nhập</button>
+        </div>
+    </div>
+    <div class="overlay-container">
+        <div class="overlay">
+            <div class="overlay-panel overlay-left">
+                <h1>Xin chào!</h1>
+                <p>Sau khi đăng ký thành công. Hãy quay lại đăng nhập</p>
+                <button class="ghost" id="signIn">Đăng nhập</button>
+            </div>
+            <div class="overlay-panel overlay-right">
+                <h1>Xin chào!</h1>
+                <p>Hãy đăng ký để có thể mua hàng tại The Coffee House</p>
+                <button class="ghost" id="signUp" onclick="document.getElementById('ten').value = ''">Đăng Ký</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const signUpButton = document.getElementById('signUp');
+    const signInButton = document.getElementById('signIn');
+    const container = document.getElementById('container');
+
+    signUpButton.addEventListener('click', () => {
+        container.classList.add("right-panel-active");
+    });
+
+    signInButton.addEventListener('click', () => {
+        container.classList.remove("right-panel-active");
+    });
+</script>

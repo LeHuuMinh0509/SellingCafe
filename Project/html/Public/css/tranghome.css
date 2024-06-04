@@ -1,0 +1,41 @@
+
+#login{
+    color: rgb(245, 164, 13);
+    transform: translate(440px,-8px);
+    font-weight: bold;
+}
+#logout{
+    transform: translate(400px,0px);
+}
+
+#atenkh {
+    display: block !important;
+    padding: 8px 25px !important;
+    color: #000000 ;
+    text-decoration: none !important;
+}
+  #atenkh:hover {
+    color:  orange !important;
+    background: #fff !important;
+    
+}
+.dropdown {
+    width: 100% !important; /* Set width of the dropdown */
+    background: #fffefe !important;
+    display: none;
+    position: absolute;
+    z-index: 999;
+    left: 0;
+    transform: translate(10px) !important;
+    opacity: 0.8;
+}
+#liten:hover .dropdown {
+    display: block; /* Display the dropdown */
+}
+.dropdown #liop {
+    display: block;
+}
+#aop{
+    margin-top: 5px;
+    margin-bottom: 2px;
+}

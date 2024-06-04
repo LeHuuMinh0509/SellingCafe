@@ -1,0 +1,164 @@
+<head>
+    <link rel="stylesheet" href="/Public/css/trangdoitt.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#change').click(function () {
+                var ipten = document.getElementsByClassName('ten')[0].value;
+                var ipdiachi = document.getElementsByClassName('diachi')[0].value;
+                var ippass = document.getElementsByClassName('pass')[0].value;
+                if (ipten != "" && ipdiachi != "" && ippass != "") {
+                    alert('Thay đổi thành công! Mời đăng nhập lại');
+                    $.post("http://localhost:3001/doithongtin", {
+                        ten: document.getElementsByClassName('ten')[0].value,
+                        diachi: document.getElementsByClassName('diachi')[0].value,
+                        pass: document.getElementsByClassName('pass')[0].value,
+                        sdt: localStorage.getItem("SoDienThoai"),
+
+                    }, function (data, status) {
+                        window.location.href = "http://localhost:3001/login";
+                        localStorage.removeItem("SoDienThoai");
+                        localStorage.removeItem("TenKhachHang");
+                        localStorage.removeItem("DiaChi");
+                        localStorage.removeItem("MatKhau");
+                        localStorage.removeItem("Admin");
+
+                    })
+                }
+                else{
+                    alert('Chưa nhập đủ thông tin')
+                }
+            })
+            // $('#SignIn').click(function () {
+            //     $.post("http://localhost:3001/userLogin", {
+            //         sdtlg: localStorage.getItem("TenKhachHang"),
+            //         passlg: localStorage.getItem("SoDienThoai")
+            //     }, function (data, status) {
+            //         if (!data || data.length == 0) {
+            //             alert("Số điện thoại hoặc mật khẩu không đúng");
+            //         }
+            //         else {
+            //             if (data[0].Admin == 0) {
+            //                 localStorage.setItem("TenKhachHang", document.getElementsByClassName('ten')[0].value);
+            //                 localStorage.setItem("SoDienThoai", data[0].SoDienThoai);
+            //                 window.location.href = "/admin";
+            //             }
+            //             else {
+            //                 localStorage.setItem("TenKhachHang", data[0].TenKhachHang);
+            //                 localStorage.setItem("SoDienThoai", data[0].SoDienThoai);
+            //                 window.location.href = "/home";
+            //             }
+            //         }
+            //     })
+            // })
+            function innit() {
+                var sdt = localStorage.getItem("SoDienThoai");
+                if (sdt == null || sdt == "" || sdt == undefined) {
+                    window.location.href = "http://localhost:3001/login"
+                }
+                else {
+                    $("#login").html(sdt)
+                }
+            }
+            innit();
+            // function logout() {
+            //     var sdt = localStorage.getItem("SoDienThoai");
+            //     if (sdt == null || sdt == "" || sdt == undefined) {
+            //         $("#logout").html("Login")
+            //     }
+            //     else {
+            //         $("#logout").html("Log Out")
+            //     }
+            // }
+            // logout();
+            // $('#logout').click(function () {
+            //     localStorage.removeItem("SoDienTHoai");
+            //     localStorage.removeItem("TenKhachHang");
+            // })
+            function showchange() {
+                var tenkh = localStorage.getItem("TenKhachHang");
+                var sdt = localStorage.getItem("SoDienThoai");
+                var diachi = localStorage.getItem("DiaChi");
+                var pass = localStorage.getItem("MatKhau");
+                var show = `<input type="text" value= "${tenkh}" class="ten" required />
+                            <input type="password" value= "${pass}" class="pass" required />
+                            <input type="address" value= "${diachi}" class="diachi" required />`
+                $("#Show").html(show)
+            }
+            showchange();
+            $('#Return').click(function () {
+                var admin = localStorage.getItem("Admin");
+                if (admin == 0) {
+                    window.location.href = "http://localhost:3001/admin"
+                }
+                else {
+                    window.location.href = "http://localhost:3001/home"
+                }
+
+            })
+
+        });
+
+
+    </script>
+    <!-- <script>
+        $('#SignIn').click(function () {
+            $.post("http://localhost:3001/userLogin", {
+                sdt: document.getElementsByClassName('sdt')[0].value,
+                pass: document.getElementsByClassName('pass')[0].value,
+            }, function (data, status) {
+                if (!data || data.length == 0) {
+                   alert("Số điện thoại hoặc mật khẩu không đúng");
+                }
+                else {
+                    if(data[0].Admin =="0"){
+                        window.location.href="/admin";
+                    }
+                    else{
+                        localStorage.setItem("TenKhachHang",data[0].TenKhachHang);
+                        localStorage.setItem("SoDienThoai",data[0].SoDienThoai);
+                        window.location.href="/home";
+                    }
+                }
+            })
+        });
+    </script> -->
+</head>
+<h2>Đổi thông tin</h2>
+<div class="container" id="container">
+    <div class="form-container sign-up-container">
+        <div id="form">
+            <!-- <div class="social-container">
+                <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+                <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+            </div> -->
+
+        </div>
+    </div>
+    <div class="form-container sign-in-container">
+        <div id="form">
+            <h1>Thông tin</h1><br>
+            <span>Số điện thoại sẽ không thể bị thay đổi</span>
+            <div id="Show"></div>
+            <div id="text"></div>
+            <button id="change">Thay đổi</button>
+        </div>
+    </div>
+    <div class="overlay-container">
+        <div class="overlay">
+            <div class="overlay-panel overlay-right">
+                <h1 id="login"></h1>
+                <p>Quay lại nếu không cần thay đổi thông tin</p>
+                <button class="ghost" id="Return">Quay lại</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const signUpButton = document.getElementById('signUp');
+    const signInButton = document.getElementById('signIn');
+    const container = document.getElementById('container');
+
+</script>
